@@ -29,3 +29,6 @@ Requirements:
 //  - Work on making the CPU smarter
 //  - Use the minmax algorithm to create an unbeatable AI
 
+1. start
+2. init board
+3. create players

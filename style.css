@@ -12,3 +12,30 @@ body {
 h1 {
     color: lightgoldenrodyellow;
 }
+
+#main {
+    display: grid;
+    place-items: center;
+    margin: 0 auto;
+}
+#board {
+    display: grid;
+    width: 600px;
+    height: 600px;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    place-items: center;
+    border-radius: 10px;
+    background-color: rgb(60, 60, 99);
+}
+
+.tile {
+    width: 150px;
+    height: 150px;
+    /* align-self: center; */
+    text-align: center;
+    font-size: 50pt;
+    border: 1px dashed white;
+    border-radius: 5px;
+    color: lightgrey;
+    background-color: purple;
+}
