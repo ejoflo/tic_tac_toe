@@ -28,14 +28,12 @@ const gameController = (firstPlayer, secondPlayer) => {
                 if (gameBoard.board[index] === '') {
                     displayBoard(index, currentPlayer); 
                     currentPlayer = swapPlayer(currentPlayer);
+                    displayPlayerInfo(currentPlayer);
                 } else if (gameBoard.board[index] === currentPlayer.marker || gameBoard.board[index] !== '') {
                     alert ('Please choose a different tile.');
                 }
-    
-
                 console.log(`player marker: ${currentPlayer.marker}`);            
                 console.log(`board array: ${gameBoard.board} index: ${index}`);
-                // checkBoard();
             });
         });
     };
@@ -46,28 +44,26 @@ const gameController = (firstPlayer, secondPlayer) => {
         } else {
             return firstPlayer;
         }
-        // (marker === 'X') ? playerMove(secondPlayer) : playerMove(firstPlayer);
+    };
+
+    const displayPlayerInfo = function(player) {
+        document.querySelector('.playerInfo').innerHTML = `${player.name} (${player.marker}) choose a tile!`;
     };
 
     const displayBoard = function(tileIndex, player) {
-        // while (gameBoard.board[tileIndex] !== '' && gameBoard.board[tileIndex] !== player.marker) {
-        //     alert('Please pick another tile.');
-        // }
-        
         gameBoard.board[tileIndex] = player.marker;
-        // (gameBoard.board[tileIndex] === '') ? gameBoard.board[tileIndex] = player.marker : alert('Please pick another tile.');
-        // gameBoard.board[tileIndex] = player.marker; 
         gameBoard.board.forEach(function(val, index, theArray) {
             document.querySelector(`#tile${index}`).innerHTML = theArray[index];
         });
     };
 
     return {
-        playerMove
+        playerMove,
+        displayPlayerInfo
     };
 };
 
-const startGame = () => {
+const startGame = (() => {
     const playerOne = playerFactory('Player 1', 'X');
     playerOne.welcomeMsg();
 
@@ -84,12 +80,12 @@ const startGame = () => {
         
         switch (firstPlayer) {
             case 'X': 
-                playerOne.yourTurn();
+                gameController(playerOne, playerTwo).displayPlayerInfo(playerOne);
                 gameController(playerOne, playerTwo).playerMove(playerOne);
                 break;
             
             case 'O': 
-                playerTwo.yourTurn();
+                gameController(playerOne, playerTwo).displayPlayerInfo(playerTwo);
                 gameController(playerOne, playerTwo).playerMove(playerTwo);
                 break;
         
@@ -97,10 +93,14 @@ const startGame = () => {
                 break;            
             }
         }
-        
-    chooseFirstPlayer();
+
+    const startListeners = (function() {
+        document.querySelector('#startRestart').addEventListener('click', chooseFirstPlayer);
+    })();
+    
+    // chooseFirstPlayer();
 
     return {
     };
-};
+})();
 
