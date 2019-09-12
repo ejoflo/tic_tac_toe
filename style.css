@@ -33,9 +33,15 @@ h1 {
     height: 150px;
     /* align-self: center; */
     text-align: center;
-    font-size: 50pt;
-    border: 1px dashed white;
+    line-height: 1.4em;
+    font-size: 75pt;
+    border: 1px dashed rgb(249, 255, 215);
     border-radius: 5px;
-    color: lightgrey;
+    color: rgb(255, 247, 176);
     background-color: purple;
+    cursor: pointer;
+}
+
+.tile:hover {
+    background-color: rgb(101, 180, 255);
 }

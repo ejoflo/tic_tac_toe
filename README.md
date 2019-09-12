@@ -2,8 +2,8 @@
 a simple tic tac toe game.
 
 Requirements:
-// Store the gameboard inside an array
-// Store players inside of objects
+--- // Store the gameboard inside an array
+--- // Store players inside of objects
 // Create an object to control the flow of the game
 // Have as little global code as possible
 // Place everything inside of a module or factory
