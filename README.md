@@ -10,10 +10,10 @@ Requirements:
 // If you ever need one of something (gameBoard, displayController), use a module
 // If you need multiples of something (players), create them with factories
 // Write a JavaScript function to render the contents of the gameBoard array to the webpage (initially fill it manually with Xs and Os)
-// Build functions to:
-//  - Add marks to a specific spot on the gameBoard
-//  - Tie it to the DOM by letting players click on the gameBoard to place their marker
-//  - Make sure players can't play in spots that are taken
+--- // Build functions to:
+--- //  - Add marks to a specific spot on the gameBoard
+--- //  - Tie it to the DOM by letting players click on the gameBoard to place their marker
+--- //  - Make sure players can't play in spots that are taken
 // Each piece of functionality should be able to fit in the game, player or gameBoard objects
 //  - Put them in "logical" places
 //  - Brainstorm to make life easier
@@ -28,7 +28,3 @@ Requirements:
 //  - Start by getting the CPU to make a random move
 //  - Work on making the CPU smarter
 //  - Use the minmax algorithm to create an unbeatable AI
-
-1. start
-2. init board
-3. create players

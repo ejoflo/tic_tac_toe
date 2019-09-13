@@ -1,3 +1,8 @@
+// Bugs:
+// When changing names and cancelling, player = null
+//
+//
+
 const playerFactory = (name, marker) => {   // Factory to create players
     const welcomeMsg = () => console.log(`Welcome ${name}!`);
     const yourTurn = () => console.log(`Your turn ${name}!`);
@@ -22,20 +27,47 @@ const gameController = (firstPlayer, secondPlayer) => {
 
     const playerMove = function(player) {
         let currentPlayer = player;
+
         document.querySelectorAll('.tile').forEach((tile, index) => {
             tile.addEventListener('click', () => {
-                console.log(currentPlayer);
                 if (gameBoard.board[index] === '') {
-                    displayBoard(index, currentPlayer); 
+                    displayBoard(index, currentPlayer);
+                    checkScore(currentPlayer);
                     currentPlayer = swapPlayer(currentPlayer);
-                    displayPlayerInfo(currentPlayer);
-                } else if (gameBoard.board[index] === currentPlayer.marker || gameBoard.board[index] !== '') {
+                    displayPlayerInfo().turnInfo(currentPlayer);
+                } else {
                     alert ('Please choose a different tile.');
                 }
-                console.log(`player marker: ${currentPlayer.marker}`);            
-                console.log(`board array: ${gameBoard.board} index: ${index}`);
             });
         });
+    };
+
+    const checkScore = function(player) {
+        let holdArray = [];
+        let winningArray = [[0, 1, 2], [0, 3, 6], 
+                            [0, 4, 8], [1, 4, 7], 
+                            [2, 4, 6], [2, 5, 8],
+                            [3, 4, 5], [6, 7, 8]];
+
+        gameBoard.board.forEach((marker, index) => {
+            if (gameBoard.board[index] === player.marker) {
+                holdArray.push(index);
+            }
+        });
+        
+        outerCheck: for (i = 0; i < winningArray.length; i++) {
+            innerCheck: for (j = 0; j < winningArray.length; j++) {
+                if (holdArray.indexOf(winningArray[i][j]) < 0) {
+                    break innerCheck;
+                } else if (j === 2) {
+                    displayPlayerInfo().winnerInfo(player);
+                    break outerCheck;
+                }
+            }
+            if (gameBoard.board.indexOf('') < 0) {   // check for a tie
+                displayPlayerInfo().tieInfo();
+            }
+        }
     };
 
     const swapPlayer = function(player) {
@@ -46,8 +78,26 @@ const gameController = (firstPlayer, secondPlayer) => {
         }
     };
 
-    const displayPlayerInfo = function(player) {
-        document.querySelector('.playerInfo').innerHTML = `${player.name} (${player.marker}) choose a tile!`;
+    const displayPlayerInfo = (player) => {
+        const turnInfo = function(player) {
+            document.querySelector('.playerInfo').innerHTML = `${player.name} •${player.marker}• your turn!`;
+        };
+        
+        const tieInfo = function() {
+            document.querySelector('.playerInfo').innerHTML = ``;
+            document.querySelector('.winnerInfo').innerHTML = `TIE GAME!`;
+        };
+        
+        const winnerInfo = function(player) {
+            document.querySelector('.playerInfo').innerHTML = ``;
+            document.querySelector('.winnerInfo').innerHTML = `${player.name} •${player.marker}• is the WINNER!`;
+        };
+
+        return {
+            turnInfo,
+            tieInfo,
+            winnerInfo
+        };
     };
 
     const displayBoard = function(tileIndex, player) {
@@ -64,28 +114,25 @@ const gameController = (firstPlayer, secondPlayer) => {
 };
 
 const startGame = (() => {
-    const playerOne = playerFactory('Player 1', 'X');
-    playerOne.welcomeMsg();
+    const playerOne = playerFactory('Player', 'X');
+    const playerTwo = playerFactory('Player', 'O');
 
-    const playerTwo = playerFactory('Player 2', 'O');
-    playerTwo.welcomeMsg();
-
-    const chooseFirstPlayer = function() {
-        let firstPlayer = '';
+    const chooseStartingPlayer = function() {
+        let startingPlayer = '';
         
-        while (firstPlayer !== 'X' && firstPlayer !== 'O') {
-            firstPlayer = prompt(`Who's going first?`, `Enter "X" or "O"`);
-            firstPlayer = firstPlayer.toUpperCase();
+        while (startingPlayer !== 'X' && startingPlayer !== 'O') {
+            startingPlayer = prompt(`Who's going first?`, `X or O`);
+            startingPlayer = startingPlayer.toUpperCase();
         }
         
-        switch (firstPlayer) {
+        switch (startingPlayer) {
             case 'X': 
-                gameController(playerOne, playerTwo).displayPlayerInfo(playerOne);
+                gameController(playerOne, playerTwo).displayPlayerInfo().turnInfo(playerOne);
                 gameController(playerOne, playerTwo).playerMove(playerOne);
                 break;
             
             case 'O': 
-                gameController(playerOne, playerTwo).displayPlayerInfo(playerTwo);
+                gameController(playerOne, playerTwo).displayPlayerInfo().turnInfo(playerTwo);
                 gameController(playerOne, playerTwo).playerMove(playerTwo);
                 break;
         
@@ -95,12 +142,15 @@ const startGame = (() => {
         }
 
     const startListeners = (function() {
-        document.querySelector('#startRestart').addEventListener('click', chooseFirstPlayer);
+        document.querySelector('#startRestart').addEventListener('click', chooseStartingPlayer);
+        document.querySelector('#playerOne').addEventListener('click', () => {
+            playerOne.newName();
+            document.querySelector('#playerOne').innerHTML = `${playerOne.name} •X•`;
+        });
+        document.querySelector('#playerTwo').addEventListener('click', () => {
+            playerTwo.newName();
+            document.querySelector('#playerTwo').innerHTML = `${playerTwo.name} •O•`;
+        });
     })();
-    
-    // chooseFirstPlayer();
-
-    return {
-    };
 })();
 

@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
 }
 
 body {
@@ -30,7 +31,7 @@ h1 {
 
 #menu {
     display: grid;
-    grid-template: 1fr 1fr / 1fr 1fr 1fr;
+    grid-template: 35px 25px 40px / 1fr 1fr 1fr;
     margin: 10px;
 }
 
@@ -41,6 +42,22 @@ h1 {
     width: 150px;
     height: 25px;
     justify-self: center;
+}
+
+#playerOne {
+    grid-row: 2 / 2;
+    grid-column: 1;
+    width: 150px;
+    height: 25px;
+    justify-self: right;
+}
+
+#playerTwo {
+    grid-row: 2 / 3;
+    grid-column: 3;
+    width: 150px;
+    height: 25px;
+    justify-self: left;
 }
 
 .playerInfo {
@@ -54,6 +71,18 @@ h1 {
     justify-self: center;
 }
 
+.winnerInfo {
+    grid-row: 3;
+    grid-column: 2;
+    width: 400px;
+    color: rgb(255, 238, 0);
+    font-size: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    align-self: end;
+}
+
 .tile {
     width: 150px;
     height: 150px;
@@ -65,7 +94,6 @@ h1 {
     border-radius: 5px;
     color: rgb(255, 247, 176);
     background-color: purple;
-    cursor: pointer;
 }
 
 .tile:hover {
