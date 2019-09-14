@@ -6,9 +6,9 @@ Requirements:
 --- // Store players inside of objects
 // Create an object to control the flow of the game
 // Have as little global code as possible
-// Place everything inside of a module or factory
+--- // Place everything inside of a module or factory
 // If you ever need one of something (gameBoard, displayController), use a module
-// If you need multiples of something (players), create them with factories
+--- // If you need multiples of something (players), create them with factories
 // Write a JavaScript function to render the contents of the gameBoard array to the webpage (initially fill it manually with Xs and Os)
 --- // Build functions to:
 --- //  - Add marks to a specific spot on the gameBoard

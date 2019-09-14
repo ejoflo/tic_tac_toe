@@ -37,6 +37,7 @@ h1 {
 }
 
 #startBtn {
+    display: inline;
     grid-row: 2;
     grid-column: 2;
     background-color: rgb(234, 0, 255);
@@ -54,6 +55,27 @@ h1 {
 #startBtn:hover {
     background-color: rgb(240, 213, 255);
     color: rgb(250, 59, 209);
+}
+
+#restartBtn {
+    display: none;
+    grid-row: 2;
+    grid-column: 2;
+    background-color: rgb(62, 199, 165);
+    color: white;
+    font-size: 11pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    width: 150px;
+    height: 35px;
+    border-radius: 5px;
+    justify-self: center;
+    outline: none;
+}
+
+#restartBtn:hover {
+    background-color: rgb(213, 255, 251);
+    color: rgb(79, 167, 145);
 }
 
 #playerOne {
@@ -105,11 +127,23 @@ h1 {
     justify-self: center;
 }
 
+.randomInfo {
+    grid-row: 3;
+    grid-column: 1 / 4;
+    width: auto;
+    color: rgb(245, 255, 107);
+    font-size: 35px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    align-self: end;
+}
+
 .winnerInfo {
     grid-row: 3;
     grid-column: 1 / 4;
     width: auto;
-    color: rgb(255, 238, 0);
+    color: rgb(0, 255, 157);
     font-size: 35px;
     font-weight: bold;
     text-transform: uppercase;
@@ -127,10 +161,11 @@ h1 {
     border: 1px dashed rgb(249, 255, 215);
     border-radius: 5px;
     color: rgb(255, 247, 176);
-    background-color: purple;
+    background-color: rgb(153, 47, 153);
 }
 
 .tile:hover {
+    color: white;
     background-color: rgb(255, 101, 229);
 }
 
@@ -143,6 +178,31 @@ h1 {
     font-size: 75pt;
     border: 1px dashed rgb(249, 255, 215);
     border-radius: 5px;
-    color: rgb(182, 255, 123);
-    background-color: purple;
+    color: rgb(255, 247, 176);
+    background-color: rgb(153, 47, 153);
+    cursor: not-allowed;
+}
+
+.tileEnd:hover {
+    background-color: rgb(153, 47, 153);
+    cursor: not-allowed;
+}
+
+.winTile {
+    width: 150px;
+    height: 150px;
+    /* align-self: center; */
+    text-align: center;
+    line-height: 1.4em;
+    font-size: 75pt;
+    border: 1px dashed rgb(176, 255, 86);
+    border-radius: 5px;
+    color: rgb(0, 255, 157);
+    background-color: rgb(214, 18, 165);
+    cursor: not-allowed;
+}
+
+.winTile:hover {
+    background-color: rgb(214, 18, 165);
+    cursor: not-allowed;
 }
