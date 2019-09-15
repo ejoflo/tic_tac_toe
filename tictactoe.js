@@ -1,19 +1,12 @@
-// Bugs:
-// When changing names and cancelling, player = null
-
 const playerFactory = (name, marker) => {   // Factory to create players
-    const welcomeMsg = () => console.log(`Welcome ${name}!`);
-    const yourTurn = () => console.log(`Your turn ${name}!`);
     const newName = function() {   // New name method
         do {
-            this.name = prompt(`What's your name?`);
-        } while (this.name === '');
+            this.name = prompt(`What's your name? (Max. 12 characters)`, 'Player');
+        } while (this.name === null || this.name === '' || this.name.length > 12);
     };
     return { 
         name: name, 
         marker: marker,
-        welcomeMsg,
-        yourTurn,
         newName
     };
 };
@@ -24,13 +17,13 @@ const displayController = (player, index, array) => {
             document.querySelector('.randomInfo').textContent = `${text}`;
         };
         const turnInfo = function(player) {
-            document.querySelector('.playerInfo').textContent = `Your turn ${player.name} •${player.marker}•!`;
+            document.querySelector('.playerInfo').textContent = `Your turn ❮${player.marker}❯ ${player.name}!`;
         };
         const tieInfo = function() {
             document.querySelector('.winnerInfo').textContent = `TIE GAME!`;
         };
         const winnerInfo = function(player) {
-            document.querySelector('.winnerInfo').textContent = `${player.name} •${player.marker}• WINS!`;
+            document.querySelector('.winnerInfo').textContent = `❮${player.marker}❯ ${player.name} WINS!`;
         };
         const clearInfo = function() {
             document.querySelector('.playerInfo').textContent = ``;
@@ -48,12 +41,8 @@ const displayController = (player, index, array) => {
         };
     };
     const displayBoard = function(boardArray, tileIndex, player) {
-        console.log(boardArray);
-        console.log(`boardArray ${boardArray}`);        
-        // boardArray[tileIndex] = player.marker;
         boardArray.forEach(function(val, index, theArray) {
             document.querySelector(`#tile${index}`).textContent = theArray[index];
-            console.log(`theArray ${theArray}`);
         });
     };
     const tieDisplay = function(boardArray) {
@@ -84,9 +73,9 @@ const gameController = (firstPlayer, secondPlayer) => {
     let currentPlayer = firstPlayer;
 
     const restartBtn = document.querySelector('#restartBtn');
-    restartBtn.addEventListener('click', () => {   // Restart Button
+        restartBtn.addEventListener('click', () => {   // Restart Button
         restartGame();
-    });
+        });
 
     const makeMove = function() {
         const tiles = document.querySelectorAll('.tile');
@@ -99,28 +88,24 @@ const gameController = (firstPlayer, secondPlayer) => {
 
     function selectTiles (index) {
         let winStatus = document.querySelector('.winnerInfo');
-        console.log(gameBoard.board);
+
         if (winStatus.textContent !== '' || gameBoard.board.indexOf('') < 0) {   // Remove event listeners if player wins or ties
-            // tile.removeEventListener('click', selectTiles);  // THIS ONLY WORKS AFTER EACH TILE IS CLICKED ////////////////////////////////////////////////////////
-            console.log('YOU WIN PERFFECT');
+            alert('Press RESTART to play again!')
+
         }  else if (gameBoard.board[index] === '') {   // Player selects tile
             gameBoard.board[index] = currentPlayer.marker;
-
-            let testArray = [];
-            testArray = gameBoard.board.concat([]);
-            console.log(testArray);
-            displayController().displayBoard(testArray, index, currentPlayer);
-            
+            displayController().displayBoard(gameBoard.board, index, currentPlayer);
             checkScore(currentPlayer);
             currentPlayer = swapPlayer(currentPlayer);
             displayController().displayPlayerInfo().turnInfo(currentPlayer);                  
+
             if (winStatus.textContent !== '' || gameBoard.board.indexOf('') < 0) {   // Clear info text if player wins or ties
                 displayController().displayPlayerInfo().clearInfo();
                 document.querySelector('#startBtn').style.display = 'none';
                 document.querySelector('#restartBtn').style.display = 'inline';
             }
         } else {
-            alert ('Please choose a different tile.');
+            alert ('This tile is taken.');
         }
     }
     
@@ -136,8 +121,6 @@ const gameController = (firstPlayer, secondPlayer) => {
                 holdArray.push(index);
             }
         });  
-
-console.log(`checkScore gameBoard.board: ${gameBoard.board}`);
 
         outerCheck: for (i = 0; i < winningArray.length; i++) {
             innerCheck: for (j = 0; j < winningArray.length; j++) {
@@ -155,6 +138,7 @@ console.log(`checkScore gameBoard.board: ${gameBoard.board}`);
             }
         }
     };
+    
     const swapPlayer = function(player) {
         if (player.marker === 'X') {
             return secondPlayer;
@@ -164,24 +148,14 @@ console.log(`checkScore gameBoard.board: ${gameBoard.board}`);
     };
     
     const restartGame = function() {
-        console.log(gameBoard.board);
         gameBoard.board.forEach((val, index, theArray) => {   // Clear the board
             gameBoard.board[index] = '';
-            // document.querySelector(`#tile${index}`).textContent = gameBoard.board[index];
             document.querySelector(`#tile${index}`).setAttribute('class', 'tile');
-        });
-
-        let testArray = [];
-        testArray = gameBoard.board.concat([]);
-        console.log(testArray);
-        displayController().displayBoard(testArray);
-        
-        // displayController().displayBoard(gameBoard.board);
+        });        
+        displayController().displayBoard(gameBoard.board);
         displayController().displayPlayerInfo().clearInfo();
         displayController().displayPlayerInfo().clearWinner();
-        document.querySelector('#restartBtn').style.display = 'none';
-        document.querySelector('#startBtn').style.display = 'inline';
-        console.log(gameBoard.board);
+        displayController().displayPlayerInfo().turnInfo(currentPlayer);
     };
 
     return {
@@ -194,6 +168,8 @@ const startGame = (() => {
     const playerOne = playerFactory('Player', 'X');
     const playerTwo = playerFactory('Player', 'O');
 
+    displayController().displayPlayerInfo().randomInfo(`Press START to begin`);
+
     const startListeners = (function() {
         const introText = function() {
             displayController().displayPlayerInfo().randomInfo(``);
@@ -201,19 +177,19 @@ const startGame = (() => {
         document.querySelector('#startBtn').addEventListener('click', function start() {   // Start Button
             displayController(playerOne, playerTwo).displayPlayerInfo().turnInfo(playerOne);
             gameController(playerOne, playerTwo).makeMove();
-            displayController().displayPlayerInfo().randomInfo(`Let's Begin!`);
-            setTimeout(introText, 2500); 
+            displayController().displayPlayerInfo().randomInfo(`Let's GO!`);
+            setTimeout(introText, 2000); 
+            document.querySelector('#startBtn').removeEventListener('click', start);
+            document.querySelector('#startBtn').style.display = 'none';
+            document.querySelector('#restartBtn').style.display = 'inline';
         });
-        // document.querySelector('#restartBtn').addEventListener('click', () => {   // Restart Button
-        //     gameController().restartGame();
-        // });
         document.querySelector('#playerOne').addEventListener('click', () => {   // Player X Button  
             playerOne.newName();
-            document.querySelector('#playerOne').textContent = `${playerOne.name} •X•`;
+            document.querySelector('#playerOne').textContent = `❮X❯ ${playerOne.name}`;
         });
         document.querySelector('#playerTwo').addEventListener('click', () => {   // Player O Button
             playerTwo.newName();
-            document.querySelector('#playerTwo').textContent = `${playerTwo.name} •O•`;
+            document.querySelector('#playerTwo').textContent = `❮O❯ ${playerTwo.name}`;
         });
     })();
 })();
